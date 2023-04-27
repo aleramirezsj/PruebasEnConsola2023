@@ -9,7 +9,7 @@ namespace PruebasEnConsola
             //new EjercicioNombreEdad();
             //new EjercicioNotas();
             //new EjercicioCalculadora();
-            new Empleado();
+            Empleado empleado1=new Empleado();
 
         }
 

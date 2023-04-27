@@ -8,7 +8,8 @@ namespace PruebasEnConsola
         {
             //new EjercicioNombreEdad();
             //new EjercicioNotas();
-            new EjercicioCalculadora();
+            //new EjercicioCalculadora();
+            new Empleado();
 
         }
 

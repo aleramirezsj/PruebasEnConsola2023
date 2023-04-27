@@ -11,5 +11,10 @@ namespace KioscoConsola.Class
         public string Descripción { get; set; }
         public decimal Precio { get; set; }
         public Rubro Rubro { get; set; }
+
+        public Producto(string descripción)
+        {
+            Descripción = descripción;
+        }
     }
 }

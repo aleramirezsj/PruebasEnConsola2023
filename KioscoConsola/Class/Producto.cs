@@ -12,9 +12,16 @@ namespace KioscoConsola.Class
         public decimal Precio { get; set; }
         public Rubro Rubro { get; set; }
 
-        public Producto(string descripción)
+        public Producto(string descripción, decimal precio, Rubro rubro)
         {
-            Descripción = descripción;
+            this.Descripción = descripción;
+            this.Precio = precio;
+            this.Rubro = rubro;
+        }
+
+        public override string ToString()
+        {
+            return $"Producto: {this.Descripción} Precio:{this.Precio} {this.Rubro}";
         }
     }
 }

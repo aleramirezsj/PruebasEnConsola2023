@@ -14,5 +14,9 @@ namespace KioscoConsola.Class
         {
             this.Nombre = nombre;
         }
+        public override string ToString()
+        {
+            return $"Rubro: {Nombre}";
+        }
     }
 }

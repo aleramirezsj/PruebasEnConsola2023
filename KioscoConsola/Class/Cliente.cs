@@ -7,23 +7,31 @@ using System.Threading.Tasks;
 
 namespace KioscoConsola.Class
 {
-    public class Cliente
+    public class Cliente: Persona
     {
-        public string Nombre { get; set; }
-        public uint Teléfono { get; set; }
-        public string Dirección { get; set; }
         public SituacionIvaEnum SituacionIva { get; set; }
+        public int Dni { get; set; }
 
-        public Cliente(string nombre, uint teléfono, string dirección, SituacionIvaEnum situacionIva)
+        public Cliente(string nombre, uint teléfono, string dirección, SituacionIvaEnum situacionIva, int dni):base(nombre,teléfono,dirección)
         {
-            Nombre = nombre;
-            Teléfono = teléfono;
-            Dirección = dirección;
             SituacionIva = situacionIva;
+            Dni = dni;
         }
         public override string ToString()
         {
-            return $"Cliente: {this.Nombre} Teléfono: {this.Teléfono} Dirección: {this.Dirección} Situación IVA: {this.SituacionIva}";
+            return $"Cliente: {base.ToString()} Situación IVA: {this.SituacionIva} DNI: {this.Dni}";
+        }
+
+        public override string Saludar()
+        {
+            return $"Hola soy {this.Nombre}";
+        }
+        public override string Imprimir()
+        {
+            string retorno= base.Imprimir();
+            retorno += $"Situación Iva: {this.SituacionIva}{Environment.NewLine}";
+            retorno += $"DNI: {this.Dni}";
+            return retorno ;
         }
     }
 }

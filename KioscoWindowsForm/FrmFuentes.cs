@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,12 +22,46 @@ namespace KioscoWindowsForm
         CheckBox chkNegrita;
         CheckBox chkCursiva;
         CheckBox chkSubrayado;
-        
-
+        ComboBox cboFuente;
+        ComboBox cboColor;
+        RadioButton rdbIzquierda;
+        RadioButton rdbCentrado;
+        RadioButton rdbDerecha;
         NumericUpDown nudTamaño;
         public FrmFuentes()
         {
             InitializeComponent();
+
+            rdbIzquierda = new RadioButton();
+            rdbIzquierda.AutoSize = true;
+            rdbIzquierda.Text = "Izquierda";
+            rdbIzquierda.CheckedChanged += CambiarOrientacion;
+            rdbIzquierda.Location = new Point(40, 300);
+
+            rdbDerecha = new RadioButton();
+            rdbDerecha.AutoSize = true;
+            rdbDerecha.Text = "Derecha";
+            rdbDerecha.CheckedChanged += CambiarOrientacion;
+            rdbDerecha.Location = new Point(160, 300);
+
+            rdbCentrado = new RadioButton();
+            rdbCentrado.AutoSize = true;
+            rdbCentrado.Text = "Centrado";
+            rdbCentrado.CheckedChanged += CambiarOrientacion;
+            rdbCentrado.Location = new Point(300, 300);
+
+            cboFuente = new ComboBox();
+            cboFuente.Location = new Point(40, 200);
+            cboFuente.Width = 200;
+            cboFuente.SelectedValueChanged += AplicarEstilosYTamaño;
+            CargarFuentes();
+
+            cboColor = new ComboBox();
+            cboColor.Location = new Point(40, 250);
+            cboColor.Width = 200;
+            cboColor.SelectedValueChanged += CambiarColor;
+            CargarColores();
+
 
             chkNegrita = new CheckBox();
             chkNegrita.Text = "Negrita";
@@ -64,6 +99,7 @@ namespace KioscoWindowsForm
             btnAceptar.MouseDown += btnAceptar_clickDerecho;
 
             lblVistaPrevia = new Label();
+            lblVistaPrevia.Dock= DockStyle.Fill;
 
             panelVistaPrevia = new Panel();
             panelVistaPrevia.BorderStyle=BorderStyle.Fixed3D;
@@ -96,31 +132,72 @@ namespace KioscoWindowsForm
             Controls.Add(chkNegrita);
             Controls.Add(chkSubrayado);
             Controls.Add(chkCursiva);
+            Controls.Add(cboFuente);
+            Controls.Add(cboColor);
+            Controls.Add(rdbIzquierda);
+            Controls.Add(rdbDerecha);
+            Controls.Add(rdbCentrado);
+        }
+
+        private void CambiarOrientacion(object? sender, EventArgs e)
+        {
+            if (rdbIzquierda.Checked) {
+                lblVistaPrevia.TextAlign = ContentAlignment.TopLeft;
+            }
+            if(rdbDerecha.Checked)
+            {
+                lblVistaPrevia.TextAlign= ContentAlignment.TopRight;
+            }
+            if (rdbCentrado.Checked)
+            {
+                lblVistaPrevia.TextAlign = ContentAlignment.TopCenter;
+            }
+        }
+
+        private void CargarColores()
+        {
+            foreach (KnownColor color in Enum.GetValues(typeof(KnownColor)))
+            {
+                cboColor.Items.Add(color);
+            }
+        }
+
+        private void CambiarColor(object? sender, EventArgs e)
+        {
+            lblVistaPrevia.ForeColor=Color.FromName(cboColor.Text);
+        }
+
+        private void CargarFuentes()
+        {
+            foreach (FontFamily family in FontFamily.Families)
+            {
+                cboFuente.Items.Add(family.Name);
+            }
         }
 
         private void chkCursiva_click(object? sender, EventArgs e)
         {
-            AplicarEstilosYTamaño();
+            AplicarEstilosYTamaño(this,EventArgs.Empty);
         }
 
-        private void AplicarEstilosYTamaño()
+        private void AplicarEstilosYTamaño(object sender,EventArgs args)
         {
             FontStyle negrita = chkNegrita.Checked ? FontStyle.Bold : FontStyle.Regular;
             FontStyle cursiva = chkCursiva.Checked ? FontStyle.Italic : FontStyle.Regular;
             FontStyle subrayado = chkSubrayado.Checked ? FontStyle.Underline : FontStyle.Regular;
             FontStyle estilos= negrita | cursiva | subrayado;
-            lblVistaPrevia.Font = new Font(lblVistaPrevia.Font.FontFamily, (float)nudTamaño.Value,estilos);
+            lblVistaPrevia.Font = new Font(cboFuente.Text, (float)nudTamaño.Value,estilos);
             
         }
 
         private void chkSubrayado_click(object? sender, EventArgs e)
         {
-            AplicarEstilosYTamaño();
+            AplicarEstilosYTamaño(this, EventArgs.Empty);
         }
 
         private void chkNegrita_click(object? sender, EventArgs e)
         {
-            AplicarEstilosYTamaño();
+            AplicarEstilosYTamaño(this, EventArgs.Empty);
         }
 
         private void btnAceptar_clickDerecho(object? sender, MouseEventArgs e)
@@ -131,7 +208,7 @@ namespace KioscoWindowsForm
 
         private void CambiarTamañoLabelPanel(object? sender, EventArgs e)
         {
-            AplicarEstilosYTamaño();
+            AplicarEstilosYTamaño(this, EventArgs.Empty);
         }
 
         private void btnAceptar_click(object? sender, EventArgs e)

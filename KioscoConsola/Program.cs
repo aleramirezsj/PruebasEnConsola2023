@@ -1,10 +1,26 @@
 ﻿using KioscoConsola.Class;
 using KioscoConsola.Enums;
+using System.Drawing;
 
 public class Program
 {
+    public delegate void DelegadoImprimir(string mensaje);
+
+    private static void ImprimirEnLaConsola(string mensaje)
+    {
+        Console.WriteLine(mensaje);
+    }
     private static void Main(string[] args)
     {
+        //PROBAMOS DELEGADOS
+        DelegadoImprimir delegadoImpresión = ImprimirEnLaConsola;
+        //PROBAMOS MANEJADORES DE EVENTOS
+        ControladorDeEventos controlador=new ControladorDeEventos();
+        ImpresionesEnPantalla impresiones=new ImpresionesEnPantalla();
+        controlador.TituloGenericsEvento += impresiones.ImprimirTituloGenerics;
+        controlador.ListaColoresEvento += impresiones.ImprimirListaColores;
+        controlador.ListaTelefonosEvento += impresiones.ImprimirListaTelefonos;
+
         Rubro gaseosas = new Rubro("Gaseosas");
         Producto coca= new Producto("Coca Cola 2lts",650,gaseosas);
         Producto pepsi = coca;
@@ -12,7 +28,8 @@ public class Program
         bool sonIguales=coca.Equals(pepsi);
         var hash1= coca.GetHashCode();
         var hash2= pepsi.GetHashCode();
-
+        
+        
         Console.WriteLine(coca.Imprimir());
         Console.WriteLine(gaseosas);
 
@@ -30,8 +47,25 @@ public class Program
         {
             Console.WriteLine(persona.Imprimir());
         }
+
+        controlador.MostrarTituloGenerics();
         Lista<Cliente> clientes = new Lista<Cliente>();
         clientes.AgregarElemento(ale);
-        Console.WriteLine(clientes.ObtenerElemento(0).ToString());
+        Console.WriteLine(clientes.ObtenerElemento(0));
+        Lista<string> teléfonos= new Lista<string>();
+        teléfonos.AgregarElemento("3498 447106");
+        teléfonos.AgregarElemento("3498 428576");
+        teléfonos.AgregarElemento("3498 426023");
+        delegadoImpresión($"Imprimiendo el teléfono Nº3 {teléfonos.ObtenerElemento(2)}" );
+        Lista<Color> colores= new Lista<Color>();
+        colores.AgregarElemento(Color.Red);
+        colores.AgregarElemento(Color.Yellow);
+        colores.AgregarElemento(Color.Blue);
+        delegadoImpresión($"Imprimiendo el Color Nº3 {colores.ObtenerElemento(2)}");
+        controlador.MostrarListaTelefonos();
+        Console.WriteLine(teléfonos.ImprimirLista());
+        controlador.MostrarListaColores();
+        Console.WriteLine(colores.ImprimirLista());
+
     }
 }

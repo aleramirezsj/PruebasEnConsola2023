@@ -31,5 +31,14 @@ namespace KioscoConsola.Class
                 throw new IndexOutOfRangeException("Índice fuera de rango");
             }
         }
+        public string ImprimirLista()
+        {
+            string retorno = $"Lista:{Environment.NewLine}";
+            foreach (T elemento in elementos)
+            {
+                retorno += elemento + Environment.NewLine;
+            }
+            return retorno;
+        }
     }
 }
